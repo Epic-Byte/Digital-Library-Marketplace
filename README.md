@@ -1,8 +1,8 @@
 ###  📦 install 📚
 
 ```bash
-git clone https://github.com/Epic-Byte/NestCoinLibrary
-cd NestCoinLibrary
+git clone https://github.com/Epic-Byte/Digital-Library-Marketplace
+cd Digital-Library-Marketplace
 yarn install
 ```
 
