@@ -24,6 +24,9 @@ contract Library
     uint256 public count = 0;
     uint256 public Pcount = 0;
 
+
+    address private Owner;
+
     /*
     *@notice maps user to their library
     */
@@ -38,13 +41,19 @@ contract Library
     event bought(address seller, address buyer, string name, uint256 price);
 
 
-    error  incorrect_ether();
+    error incorrect_ether();
+    error not_owner();
     
 
     /*
     *@notice array of public library items
     */
     content[] public publicLib;
+
+    constructor(address _owner)
+    {
+        Owner= _owner;
+    }
 
     /*
     *@notice uploads privately to users library
@@ -134,5 +143,23 @@ contract Library
         privlib[msg.sender].push(content(c.ID,c.name,c.Link,c.description,c.seller,c.price));
         emit bought(c.seller, msg.sender, c.name, c.price);
         payable(msg.sender).transfer((msg.value*95)/100);
+    }
+
+    function changeOwner(address addr)external
+    {
+        if(msg.sender!= Owner)
+        {
+            revert not_owner();
+        }
+        Owner= addr;
+    }
+
+    function withdraw()external
+    {
+        if(msg.sender!= Owner)
+        {
+            revert not_owner();
+        }
+        payable(msg.sender).transfer(address(this).balance);
     }
 }
