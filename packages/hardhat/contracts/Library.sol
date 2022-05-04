@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.12;
 
 
 contract Library
@@ -13,6 +13,9 @@ contract Library
         string name;
         string Link;
         string description;
+        address seller;
+        uint256 price;
+
     }
 
     /*
@@ -30,8 +33,12 @@ contract Library
     /**
     @notice Events to log public library
     */
-    event PublicUpload(string _name, string _Link, string _description);
+    event PublicUpload(string _name, string _Link, string _description, uint256 price);
     event Share(address sharer, string _filename, address _to);
+    event bought(address seller, address buyer, string name, uint256 price);
+
+
+    error  incorrect_ether();
     
 
     /*
@@ -45,12 +52,12 @@ contract Library
     @param _Link IPFS Link
     @param _description file description
     */
-    function PrivateUpload(string memory _name, string memory _Link, string memory _description) public
+    function PrivateUpload(string calldata _name, string calldata _Link, string calldata _description) external
     {
         count++;
         uint256 Count = count;
-        userLib[msg.sender][count]=content(Count,_name, _Link, _description);
-        privlib[msg.sender].push(content(Count,_name, _Link,_description));
+        userLib[msg.sender][count]=content(Count,_name, _Link, _description, msg.sender,0);
+        privlib[msg.sender].push(content(Count,_name, _Link,_description,msg.sender,0));
     }
 
     /**
@@ -59,13 +66,13 @@ contract Library
     @param _Link IPFS Link
     @param _description file description
     */
-    function publicUpload(string memory _name, string memory _Link, string memory _description) public returns(string memory)
+    function publicUpload(string calldata _name, string calldata _Link, string calldata _description) external returns(string memory)
     {
         Pcount++;
         uint256 pcount = Pcount;
-        content memory Content = content(pcount,_name, _Link, _description);
+        content memory Content = content(pcount,_name, _Link, _description,msg.sender,0);
         publicLib.push(Content);
-        emit PublicUpload(_name, _Link, _description);
+        emit PublicUpload(_name, _Link, _description,0);
          return ("Added to Public Library");
     }
 
@@ -75,16 +82,17 @@ contract Library
     @param _to recieve addresses
     @param _ID of file
     */
-    function share(address[] memory _to, uint256 _ID) public returns(string memory)
+    function share(address[] calldata _to, uint256 _ID) external returns(string memory)
     {
          content memory c = userLib[msg.sender][_ID];
-        
-        for(uint256 i=0; i<_to.length; i++) {
+        uint256 length= _to.length;
+        for(uint256 i=0; i< length; ) {
         require(_to[i] != address(0),"you cant share to zero address");
         
-        userLib[_to[i]][_ID] = content(c.ID, c.name, c.Link, c.description);
-        privlib[_to[i]].push(content(c.ID,c.name, c.Link,c.description));
+        userLib[_to[i]][_ID] = content(c.ID, c.name, c.Link, c.description, c.seller,c.price);
+        privlib[_to[i]].push(content(c.ID,c.name, c.Link,c.description,c.seller,c.price));
         emit Share(msg.sender, c.name, _to[i]);
+        unchecked {i++; }
         }
         return "shared";
     }
@@ -99,13 +107,32 @@ contract Library
     }
 
     /*
-    *@notice make private item public
+    *@notice make private item public for sale
     @param _ID id of item to make public
+    @param price price of item
     */
-    function makePublic(uint256 _ID)public
+    function publicSale(uint256 _ID, uint256 price)external  //note this was our make public funtion
     {
         content memory c = userLib[msg.sender][_ID];
-         publicLib.push(c);
-          emit PublicUpload(c.name, c.Link, c.description);
+        publicLib.push(content(c.ID,c.name,c.Link,c.description,msg.sender,price));
+        emit PublicUpload(c.name, c.Link, c.description, price);
+    }
+
+    /*
+    *@notice buy an item from the public marketplace 
+    @param arrayID id of item in public library array
+    */
+    function buyItem(uint256 arrayID)external payable 
+    // guys we have to test this to ensure enough gas is calculated by metamask to also execute he transfer
+    {
+        content memory c= publicLib[arrayID];
+        if(msg.value!=c.price)
+        {
+            revert incorrect_ether();
+        }
+        userLib[msg.sender][c.ID]=content(c.ID,c.name,c.Link,c.description,c.seller,c.price);
+        privlib[msg.sender].push(content(c.ID,c.name,c.Link,c.description,c.seller,c.price));
+        emit bought(c.seller, msg.sender, c.name, c.price);
+        payable(msg.sender).transfer((msg.value*95)/100);
     }
 }
