@@ -147,7 +147,7 @@ contract Library
     // guys we have to test this to ensure enough gas is calculated by metamask to also execute the transfer
     {
         content memory c= publicLib[_arrayID];
-        uint256 feed = uint(int(c.price) / getLatestPrice());
+        uint feed = c.price / (getLatestPrice()*10**10);
         if(msg.value!=feed)
         {
             revert incorrect_ether();
@@ -162,18 +162,18 @@ contract Library
     *@notice front end gets ether value of an item for sale
     *@param arrayID the position of the item in the public items array
     */
-    function assetPrice(uint256 _arrayID)external view returns(uint256)
+    function assetPrice(uint256 _arrayID)external view returns(uint)
     //not yet working we have to look into this
     {
         content memory c= publicLib[_arrayID];
-        uint256 feed = uint(int(c.price) / getLatestPrice());
+        uint feed = c.price / (getLatestPrice()*10**10);
         return feed;
     }
 
      /*
      *@notice Returns the latest price
      */
-    function getLatestPrice() public view returns (int) {
+    function getLatestPrice() public view returns (uint) {
         (
             /*uint80 roundID*/,
             int price,
@@ -181,7 +181,7 @@ contract Library
             /*uint timeStamp*/,
             /*uint80 answeredInRound*/
         ) = priceFeed.latestRoundData();
-        return price;
+        return uint(price);
     }
 
      /*
