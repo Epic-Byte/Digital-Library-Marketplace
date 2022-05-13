@@ -151,7 +151,7 @@ contract Library
     // guys we have to test this to ensure enough gas is calculated by metamask to also execute the transfer
     {
         content memory c= publicLib[_arrayID];
-        uint256 feed = ((c.price * 10 ** 18) / getLatestPrice() * 1 wei);
+        uint256 feed = (c.price * 10 ** 18) / getLatestPrice();
         if(msg.value!=feed)
         {
             revert incorrectPrice({
