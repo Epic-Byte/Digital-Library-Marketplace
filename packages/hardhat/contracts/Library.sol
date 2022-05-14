@@ -47,7 +47,7 @@ contract Library
 
 
     error incorrectPrice(uint256 price, uint256 paid);
-    error not_owner(address rightAddress, address yourAddress);
+    error not_owner();
     error incorrectId();
 
     
@@ -138,7 +138,8 @@ contract Library
     function publicSale(uint256 _ID, uint256 _price)external  //note this was our make public funtion
     {
      //   if(_ID != )
-        content memory c = userLib[msg.sender][_ID];
+       // content memory c = userLib[msg.sender][_ID];
+       content memory c= publicLib[_ID];
         publicLib.push(content(c.ID, c.name, c.Link, c.description, c.category, msg.sender, _price));
         emit PublicUpload(c.name, c.Link, c.description, c.category, _price);
     }
@@ -162,7 +163,7 @@ contract Library
         userLib[msg.sender][c.ID]=content(c.ID,c.name,c.Link,c.description, c.category, c.seller,c.price);
         privlib[msg.sender].push(content(c.ID,c.name,c.Link,c.description, c.category, c.seller,c.price));
         emit bought(c.seller, msg.sender, c.name, c.price);
-        payable(msg.sender).transfer((feed*95)/100);
+        payable(c.seller).transfer((feed*95)/100);
     }
 
     /*
@@ -172,7 +173,7 @@ contract Library
     function assetPrice(uint256 _arrayID)external view returns(uint256)
     {
         content memory c= publicLib[_arrayID];
-        uint256 feed = (c.price / getLatestPrice() * 10 ** 18);
+        uint256 feed = ((c.price * 10 ** 26) / getLatestPrice());
         return feed;
     }
 
@@ -198,10 +199,7 @@ contract Library
     {
         if(msg.sender!= owner)
         {
-            revert not_owner({
-                rightAddress: owner,
-                yourAddress: msg.sender
-            });
+            revert not_owner();
         }
         owner = _addr;
     }
@@ -213,10 +211,7 @@ contract Library
     {
         if(msg.sender != owner)
         {
-            revert not_owner({
-                rightAddress: owner,
-                yourAddress: msg.sender
-            });
+            revert not_owner();
         }
         payable(msg.sender).transfer(address(this).balance);
     }
