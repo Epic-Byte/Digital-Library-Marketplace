@@ -138,8 +138,7 @@ contract Library
     function publicSale(uint256 _ID, uint256 _price)external  //note this was our make public funtion
     {
      //   if(_ID != )
-       // content memory c = userLib[msg.sender][_ID];
-       content memory c= publicLib[_ID];
+        content memory c = userLib[msg.sender][_ID];
         publicLib.push(content(c.ID, c.name, c.Link, c.description, c.category, msg.sender, _price));
         emit PublicUpload(c.name, c.Link, c.description, c.category, _price);
     }
