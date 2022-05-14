@@ -108,6 +108,8 @@ contract Library
     */
     function share(address[] calldata _to, uint256 _ID) external returns(string memory)
     {
+        if(userLib[msg.sender][_ID].seller != address(0))
+        {
          content memory c = userLib[msg.sender][_ID];
         uint256 length= _to.length;
         for(uint256 i=0; i< length; ) {
@@ -119,6 +121,10 @@ contract Library
         unchecked {i++; }
         }
         return "shared";
+        }else
+        {
+            revert incorrectId();
+        }
     }
 
 
@@ -137,10 +143,15 @@ contract Library
     */
     function publicSale(uint256 _ID, uint256 _price)external  //note this was our make public funtion
     {
-     //   if(_ID != )
+        if(userLib[msg.sender][_ID].seller != address(0))
+        {
         content memory c = userLib[msg.sender][_ID];
         publicLib.push(content(c.ID, c.name, c.Link, c.description, c.category, msg.sender, _price));
         emit PublicUpload(c.name, c.Link, c.description, c.category, _price);
+        }else
+        {
+            revert incorrectId();
+        }
     }
 
     /*
