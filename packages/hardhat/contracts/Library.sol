@@ -25,17 +25,18 @@ contract Library
     /*
     *@notice Id counter 
     */
-    uint256 public count = 0;
-    uint256 public Pcount = 0;
+    uint256 public privateCount = 0;
+    uint256 public publicCount = 0;
 
 
-    address private Owner;
+    address private owner;
 
     /*
     *@notice maps user to their library
     */
-    mapping (address=>mapping(uint256=>content)) userLib;
-    mapping (address=>content[])privlib;
+    mapping(address=>mapping(uint256=>content)) userLib;
+    mapping(address=>content[]) privlib;
+    mapping(uint256 => content) public getContentById;
 
     /**
     @notice Events to log public library
@@ -45,8 +46,10 @@ contract Library
     event bought(address _seller, address _buyer, string _name, uint256 _price);
 
 
-    error incorrect_ether();
+    error incorrectPrice(uint256 price, uint256 paid);
     error not_owner();
+    error incorrectId();
+
     
 
     /*
@@ -61,7 +64,7 @@ contract Library
      */
     constructor(address _owner)
     {
-        Owner= _owner;
+        owner= _owner;
         priceFeed =  AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
     }
 
@@ -74,10 +77,10 @@ contract Library
     */
     function PrivateUpload(string calldata _name, string calldata _link, string calldata _description, string calldata _category) external
     {
-        count++;
-        uint256 Count = count;
-        userLib[msg.sender][count]=content(Count,_name, _link, _description, _category, msg.sender,0);
-        privlib[msg.sender].push(content(Count,_name, _link,_description, _category, msg.sender,0));
+        privateCount++;
+        uint256 _privateCount = privateCount;
+        userLib[msg.sender][privateCount]=content(_privateCount, _name, _link, _description, _category, msg.sender, 0);
+        privlib[msg.sender].push(content(_privateCount, _name, _link, _description, _category, msg.sender, 0));
     }
 
     /**
@@ -89,9 +92,9 @@ contract Library
     */
     function publicUpload(string calldata _name, string calldata _Link, string calldata _description, string calldata _category) external returns(string memory)
     {
-        Pcount++;
-        uint256 pcount = Pcount;
-        content memory Content = content(pcount,_name, _Link, _description, _category, msg.sender,0);
+        publicCount++;
+        uint256 pubCount = publicCount;
+        content memory Content = content(pubCount,_name, _Link, _description, _category, msg.sender,0);
         publicLib.push(Content);
         emit PublicUpload(_name, _Link, _description, _category, 0);
          return ("Added to Public Library");
@@ -105,6 +108,8 @@ contract Library
     */
     function share(address[] calldata _to, uint256 _ID) external returns(string memory)
     {
+        if(userLib[msg.sender][_ID].seller != address(0))
+        {
          content memory c = userLib[msg.sender][_ID];
         uint256 length= _to.length;
         for(uint256 i=0; i< length; ) {
@@ -116,6 +121,10 @@ contract Library
         unchecked {i++; }
         }
         return "shared";
+        }else
+        {
+            revert incorrectId();
+        }
     }
 
 
@@ -134,39 +143,47 @@ contract Library
     */
     function publicSale(uint256 _ID, uint256 _price)external  //note this was our make public funtion
     {
+        if(userLib[msg.sender][_ID].seller != address(0))
+        {
         content memory c = userLib[msg.sender][_ID];
-        publicLib.push(content(c.ID,c.name,c.Link,c.description, c.category, msg.sender, _price));
+        publicLib.push(content(c.ID, c.name, c.Link, c.description, c.category, msg.sender, _price));
         emit PublicUpload(c.name, c.Link, c.description, c.category, _price);
+        }else
+        {
+            revert incorrectId();
+        }
     }
 
     /*
     *@notice buy an item from the public marketplace 
     *@param arrayID the position of the item in the public items array
     */
-    function buyItem(uint256 _arrayID)external payable
+    function buyItem(uint256 _arrayID) external payable
     // guys we have to test this to ensure enough gas is calculated by metamask to also execute the transfer
     {
         content memory c= publicLib[_arrayID];
-        uint feed = c.price / (getLatestPrice()*10**10);
+        uint256 feed = (c.price * 10 ** 26) / getLatestPrice();
         if(msg.value!=feed)
         {
-            revert incorrect_ether();
+            revert incorrectPrice({
+                price: feed,
+                paid: msg.value
+            });
         }
         userLib[msg.sender][c.ID]=content(c.ID,c.name,c.Link,c.description, c.category, c.seller,c.price);
         privlib[msg.sender].push(content(c.ID,c.name,c.Link,c.description, c.category, c.seller,c.price));
         emit bought(c.seller, msg.sender, c.name, c.price);
-        payable(msg.sender).transfer((feed*95)/100);
+        payable(c.seller).transfer((feed*95)/100);
     }
 
     /*
     *@notice front end gets ether value of an item for sale
     *@param arrayID the position of the item in the public items array
     */
-    function assetPrice(uint256 _arrayID)external view returns(uint)
-    //not yet working we have to look into this
+    function assetPrice(uint256 _arrayID)external view returns(uint256)
     {
         content memory c= publicLib[_arrayID];
-        uint feed = c.price / (getLatestPrice()*10**10);
+        uint256 feed = ((c.price * 10 ** 26) / getLatestPrice());
         return feed;
     }
 
@@ -190,11 +207,11 @@ contract Library
      */
     function changeOwner(address _addr)external
     {
-        if(msg.sender!= Owner)
+        if(msg.sender!= owner)
         {
             revert not_owner();
         }
-        Owner= _addr;
+        owner = _addr;
     }
 
      /**
@@ -202,7 +219,7 @@ contract Library
      */
     function withdraw()external
     {
-        if(msg.sender!= Owner)
+        if(msg.sender != owner)
         {
             revert not_owner();
         }
