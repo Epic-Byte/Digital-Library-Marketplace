@@ -11,6 +11,7 @@
     "eslint-plugin-prettier": "^3.4.0"
   },
   "dependencies": {
+    "@chainlink/contracts": "^0.4.1",
     "@eth-optimism/hardhat-ovm": "^0.2.4",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
     "@nomiclabs/hardhat-etherscan": "^2.1.8",
