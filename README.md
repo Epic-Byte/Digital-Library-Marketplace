@@ -32,5 +32,5 @@ Have your local chain running with:
 ### Rinkeby Contract
 
 ```
-0x933638d03302568293835C338702549603788a91
+0x5C0c89D5bd5991ECe83F30631b50439318C40C52
 ```
