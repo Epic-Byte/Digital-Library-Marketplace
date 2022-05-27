@@ -1,14 +1,51 @@
-import React, { useState } from "react";
-import { Empty, Input } from "antd";
+import React, { useEffect, useState } from "react";
 
-export default function Library({ uploadEvents }) {
-  const [searchEvents, setSearchEvents] = useState(uploadEvents);
+import { Empty, Input, Checkbox, Button, Switch } from "antd";
+
+export default function Library({ publicLibrary, writeContracts, tx }) {
+  const [searchEvents, setSearchEvents] = useState([publicLibrary]);
   const [val, setVal] = useState("");
+  const [data, setData] = useState([]);
   const onSearch = e => {
     setVal(e.target.value);
     console.log(val);
-    setSearchEvents(uploadEvents.filter(item => item.args._name.includes(val)));
+    setSearchEvents(publicLibrary.filter(item => item.name.includes(val)));
   };
+
+  // eslint-disable-next-line prettier/prettier
+  const buyFile = async (id, price) => {
+    try {
+      console.log("writeContracts", writeContracts);
+      let waveTnx;
+      waveTnx = await tx(writeContracts.Library.buyItem(id, { value: price * 1e18 }));
+
+      console.log("Minig..", waveTnx.hash);
+
+      await waveTnx.wait();
+      console.log("Minig---", waveTnx.hash);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getData = () => {
+    fetch("https://api.coinbase.com/v2/exchange-rates?currency=ETH", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then(function (response) {
+        console.log(response);
+        return response.json();
+      })
+      .then(function (myJson) {
+        setData(myJson.data.rates.USD);
+      });
+  };
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div style={{ backgroundColor: "#636C78" }}>
@@ -29,29 +66,41 @@ export default function Library({ uploadEvents }) {
                           <div className="work__ico-anim">
                             <img
                               src={
-                                item.args[1] ??
+                                item.Link ??
                                 "https://uploads-ssl.webflow.com/61c1b5d6cb8a0046c7fa6e82/61c1c00a889e5f20911275b4_work_ico-01.svg"
                               }
                               loading="lazy"
                               alt=""
                               className="work__ico"
+                              sizes="(max-width: 479px) 100vw, (max-width: 767px) 100vw, (max-width: 991px) 100vw, 100vw"
                             />
                             <img
                               src={
-                                item.args[1] ??
+                                item.Link ??
                                 "https://uploads-ssl.webflow.com/61c1b5d6cb8a0046c7fa6e82/61c1c00a889e5f20911275b4_work_ico-01.svg"
                               }
                               loading="eager"
                               alt=""
                               className="work__ico mod--over"
+                              sizes="(max-width: 479px) 100vw, (max-width: 767px) 100vw, (max-width: 991px) 100vw, 100vw"
                             />
                           </div>
                         </div>
-                        <h3 className="work__title">{item.args[0]}</h3>
-                        <p className="work__p">{item.args[2]}</p>
-                        <a href={item.args[1]} download="" target="_blank">
+                        <h3 className="work__title">{item.name}</h3>
+                        <p className="work__p">{item.description}</p>
+                        <a href={`${item.Link}`} download={item.name} target="_blank">
                           View
                         </a>
+                        <br />
+                        <p className="work__p">Price: ${item.price}</p>
+                        <Button
+                          type="button"
+                          className="waveButton"
+                          style={{ margin: "10px", color: "green" }}
+                          onClick={() => buyFile(index + 1, Number(item.price) / data)}
+                        >
+                          Buy File
+                        </Button>
                       </div>
                     </div>
                   </div>

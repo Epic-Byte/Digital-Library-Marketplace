@@ -16,6 +16,7 @@ export default function BigTransfer({ writeContracts, tx }) {
   const [priv, setPriv] = useState(false);
 
   const [fileName, setfileName] = useState("");
+  const [fileCategory, setfileCategory] = useState("");
 
   const [fileDescription, setfileDescription] = useState("");
 
@@ -24,9 +25,9 @@ export default function BigTransfer({ writeContracts, tx }) {
       console.log("writeContracts", writeContracts);
       let waveTnx;
       if (priv) {
-        waveTnx = await tx(writeContracts.Library.PrivateUpload(fileName, fileUrl, fileDescription));
+        waveTnx = await tx(writeContracts.Library.PrivateUpload(fileName, fileUrl, fileDescription, fileCategory));
       } else {
-        waveTnx = await tx(writeContracts.Library.publicUpload(fileName, fileUrl, fileDescription));
+        waveTnx = await tx(writeContracts.Library.publicUpload(fileName, fileUrl, fileDescription, fileCategory));
       }
 
       console.log("Minig..", waveTnx.hash);
@@ -36,6 +37,7 @@ export default function BigTransfer({ writeContracts, tx }) {
 
       setFileUrl("");
       setfileName("");
+      setfileCategory("");
       setfileDescription("");
     } catch (e) {
       console.log(e);
@@ -62,6 +64,15 @@ export default function BigTransfer({ writeContracts, tx }) {
           <div>
             <label>File name:</label>
             <Input type="text" placeholder="File Name" onChange={e => setfileName(e.target.value)} value={fileName} />
+
+            <br />
+            <label>File category:</label>
+            <Input
+              type="text"
+              placeholder="File Name"
+              onChange={e => setfileCategory(e.target.value)}
+              value={fileCategory}
+            />
 
             <br />
 
@@ -94,7 +105,7 @@ export default function BigTransfer({ writeContracts, tx }) {
                   className="waveButton"
                   style={{ margin: "10px", color: "green" }}
                   onClick={submitContract}
-                  disabled={!fileUrl || !fileName || !fileDescription}
+                  disabled={!fileUrl || !fileName || !fileCategory || !fileDescription}
                 >
                   Add to llbrary
                 </Button>

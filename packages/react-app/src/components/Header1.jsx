@@ -1,7 +1,7 @@
 import React from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
-
+import logo from "../ethereumLogo.png";
 export default function Header1({ acnt, setRoute }) {
   return (
     <header className="header ">
@@ -14,13 +14,8 @@ export default function Header1({ acnt, setRoute }) {
                 className="header__logo-link w-inline-block header-logo-link-a"
                 style={{ fontSize: "1.5rem", color: "white" }}
               >
-                <img
-                  src="https://uploads-ssl.webflow.com/61c1b5d6cb8a0046c7fa6e82/61c1c00a151e6a55be490586_logo.svg"
-                  loading="lazy"
-                  alt=""
-                  className="header__logo-img"
-                />
-                Team Call_Byte
+                <img src={logo} loading="lazy" alt="" width="100" height="50" className="header__logo-img" />
+                Lebium
               </a>
             </div>
             <div className="header__col mod--2">
