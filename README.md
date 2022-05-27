@@ -1,4 +1,4 @@
-# DEES Dapp
+# LIBEREUM Dapp
  
 > ## Table of contents
 - [Overview](#overview)
