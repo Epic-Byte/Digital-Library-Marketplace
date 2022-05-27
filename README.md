@@ -204,7 +204,7 @@ $ npm run build
  
 # 
 > ## Live Link
-  - https://nestcoin-library.surge.sh/
+  - @kingzamzon, input link
 #
  
 > ## Contributors
