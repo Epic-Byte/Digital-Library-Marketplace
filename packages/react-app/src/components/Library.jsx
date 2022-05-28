@@ -17,7 +17,8 @@ export default function Library({ publicLibrary, writeContracts, tx }) {
     try {
       console.log("writeContracts", writeContracts);
       let waveTnx;
-      waveTnx = await tx(writeContracts.Library.buyItem(id, { value: price * 1e18 }));
+      // eslint-disable-next-line prettier/prettier
+      waveTnx = await tx(writeContracts.Library.buyItem(id, { value: (price * 1e18).toString() }));
 
       console.log("Minig..", waveTnx.hash);
 

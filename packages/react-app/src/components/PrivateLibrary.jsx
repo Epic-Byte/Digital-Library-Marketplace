@@ -5,12 +5,29 @@ import { AddressInput } from "./";
 export default function PrivateLibrary({ writeContracts, tx, privateLibrary, mainnetProvider }) {
   const [shareToAddresses, setShareToAddresses] = useState({});
   const [searchEvents, setSearchEvents] = useState(privateLibrary);
+  // const [Price, setPrice] = useState("");
 
   const [val, setVal] = useState("");
   const onSearch = e => {
     setVal(e.target.value);
     console.log(val);
     setSearchEvents(privateLibrary.filter(item => item.name.includes(val)));
+  };
+
+  // eslint-disable-next-line prettier/prettier
+  const salePrice = async (id) => {
+    try {
+      console.log("writeContracts", writeContracts);
+      let waveTnx;
+      const newPrice = prompt("Please enter the selling price for your file in USD");
+      console.log(newPrice);
+      // setPrice(newPrice);
+      waveTnx = await tx(writeContracts.Library.publicSale(id, newPrice));
+
+      await waveTnx.wait();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -56,7 +73,9 @@ export default function PrivateLibrary({ writeContracts, tx, privateLibrary, mai
                       <a href={`${item.Link}`} download={item.name} target="_blank">
                         View
                       </a>
-
+                      <br />
+                      {/* eslint-disable-next-line prettier/prettier */}
+                        <p className="work__p">Price: $ {(item.price).toString()}</p>
                       <div>
                         <AddressInput
                           ensProvider={mainnetProvider}
@@ -77,6 +96,7 @@ export default function PrivateLibrary({ writeContracts, tx, privateLibrary, mai
                             setShareToAddresses({ ...shareToAddresses, ...update });
                           }}
                         /> */}
+
                         <Button
                           style={{ margin: 10 }}
                           onClick={() => {
@@ -86,6 +106,17 @@ export default function PrivateLibrary({ writeContracts, tx, privateLibrary, mai
                           }}
                         >
                           share
+                        </Button>
+                        {/* eslint-disable-next-line prettier/prettier */}
+                      
+                        <Button
+                          type="button"
+                          className="waveButton"
+                          style={{ margin: "10px", color: "green" }}
+                          // eslint-disable-next-line prettier/prettier
+                          onClick={() => salePrice(index + 1)}
+                        >
+                          Sell
                         </Button>
                       </div>
                     </div>
