@@ -5,7 +5,7 @@ import { AddressInput } from "./";
 export default function PrivateLibrary({ writeContracts, tx, privateLibrary, mainnetProvider }) {
   const [shareToAddresses, setShareToAddresses] = useState({});
   const [searchEvents, setSearchEvents] = useState(privateLibrary);
-  console.log(privateLibrary + " hi");
+
   const [val, setVal] = useState("");
   const onSearch = e => {
     setVal(e.target.value);

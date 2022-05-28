@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Empty, Input, Checkbox, Button, Switch } from "antd";
 
 export default function Library({ publicLibrary, writeContracts, tx }) {
-  const [searchEvents, setSearchEvents] = useState([publicLibrary]);
+  const [searchEvents, setSearchEvents] = useState(publicLibrary);
   const [val, setVal] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(0);
   const onSearch = e => {
     setVal(e.target.value);
     console.log(val);
@@ -92,12 +92,14 @@ export default function Library({ publicLibrary, writeContracts, tx }) {
                           View
                         </a>
                         <br />
-                        <p className="work__p">Price: ${item.price}</p>
+                        {/* eslint-disable-next-line prettier/prettier */}
+                        <p className="work__p">Price: $ {(item.price).toString()}</p>
                         <Button
                           type="button"
                           className="waveButton"
                           style={{ margin: "10px", color: "green" }}
-                          onClick={() => buyFile(index + 1, Number(item.price) / data)}
+                          // eslint-disable-next-line prettier/prettier
+                          onClick={() => buyFile(index + 1, (item.price).toNumber() / data)}
                         >
                           Buy File
                         </Button>
