@@ -1,4 +1,4 @@
-# LIBEREUM Dapp
+# LEBIUM Dapp
  
 > ## Table of contents
 - [Overview](#overview)
@@ -63,7 +63,7 @@ We have integrated the use of Chainlink Price Feed to help DEES communicate with
 > ## Repo Setup
  
 <p align="justify">
-To setup the repo, fork DEES repo, then clone the forked repository to create a copy on the local machine.
+To setup the repo, fork Lebium repo, then clone the forked repository to create a copy on the local machine.
 </p>
  
    $ git clone https://github.com/{GitHub-Username}/Digital-Library-Marketplace.git
@@ -204,7 +204,7 @@ $ npm run build
  
 # 
 > ## Live Link
-  - @kingzamzon, input link
+  - http://lebium.surge.sh/
 #
  
 > ## Contributors
