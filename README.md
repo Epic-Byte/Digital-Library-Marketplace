@@ -26,7 +26,7 @@
 #
 > ## Overview
 <p align="justify">
-This is a project by Team Epic-Byte presented for the chainlink spring 2022 hackathon.
+This is a project by Team Call-Byte presented for the chainlink spring 2022 hackathon.
 </p>
  
 <p align="justify">
@@ -204,12 +204,12 @@ $ npm run build
  
 # 
 > ## Live Link
-  - http://lebium.surge.sh/
+  - http://lebium-beta.surge.sh/
 #
  
 > ## Contributors
  
-This Project was created by the members of Epic Byte during the 2022 Chainlink Spring Hackathon.
+This Project was created by the members of Call Byte during the 2022 Chainlink Spring Hackathon.
  
 GitHub Usernames
 - GbolahanAnon
@@ -231,6 +231,6 @@ Before adding a pull request, please note:
  
 All **`suggestions`** are welcome!
 #
-> ###### README Created by `GbolahanAnon` for Epic Byte
+> ###### README Created by `GbolahanAnon` for Call Byte
  
 
