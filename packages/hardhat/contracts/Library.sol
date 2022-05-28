@@ -137,6 +137,14 @@ contract Library
     }
 
     /*
+    *@notice view public Library items
+    */
+    function viewPublicLib()public view returns(content[] memory)
+    {
+        return publicLib;
+    }
+
+    /*
     *@notice make private item public for sale
     @param _ID id of item to make public
     @param _price price of item
