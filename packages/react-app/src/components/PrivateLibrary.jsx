@@ -5,6 +5,7 @@ import { AddressInput } from "./";
 export default function PrivateLibrary({ writeContracts, tx, privateLibrary, mainnetProvider }) {
   const [shareToAddresses, setShareToAddresses] = useState({});
   const [searchEvents, setSearchEvents] = useState(privateLibrary);
+
   const [val, setVal] = useState("");
   const onSearch = e => {
     setVal(e.target.value);
@@ -21,7 +22,7 @@ export default function PrivateLibrary({ writeContracts, tx, privateLibrary, mai
         <Input placeholder="search by title" onChange={onSearch} value={val} style={{ width: "70%", margin: "20" }} />
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {searchEvents?.length ? (
-            searchEvents.map((item, index) => (
+            searchEvents?.map((item, index) => (
               <div key={index + "_" + item.address} style={{ margin: 10 }}>
                 <div data-w-id="23aa82da-d192-8dd9-fd6c-34b1289acbf1" className="content">
                   <div data-w-id="f29f62bd-d2b8-d92f-ba3b-fec3f8494fcb" className="swiper-slide mod--work">

@@ -227,6 +227,8 @@ function App(props) {
     "0x34aA3F359A9D614239015126635CE7732c18fDF3",
   ]);
 
+  const publicLibrary = useContractReader(writeContracts, "Library", "viewPublicLib");
+  console.log("🤗 publicLibrary:", publicLibrary);
   const privateLibrary = useContractReader(writeContracts, "Library", "viewPrivateLib");
   console.log("🤗 privateLibrary:", privateLibrary);
 
@@ -343,7 +345,12 @@ function App(props) {
             <BigTransfer writeContracts={writeContracts} tx={tx} />
           </Route>
           <Route path="/library">
-            <Library uploadEvents={uploadEvents} />
+            <Library
+              writeContracts={writeContracts}
+              tx={tx}
+              publicLibrary={publicLibrary}
+              //uploadEvents={uploadEvents}
+            />
           </Route>
 
           <Route path="/privatelibrary">

@@ -5,7 +5,7 @@
       "chainId": "4",
       "contracts": {
         "Library": {
-          "address": "0x5C0c89D5bd5991ECe83F30631b50439318C40C52",
+          "address": "0xcdB25aA30aF6bbE029E8348CaD9a0D37293C0c85",
           "abi": [
             {
               "inputs": [
@@ -426,6 +426,56 @@
             {
               "inputs": [],
               "name": "viewPrivateLib",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "ID",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "name",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "Link",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "category",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "seller",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "price",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Library.content[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "viewPublicLib",
               "outputs": [
                 {
                   "components": [
