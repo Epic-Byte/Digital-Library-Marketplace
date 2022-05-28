@@ -1,4 +1,4 @@
-# DEES Dapp
+# LEBIUM Dapp
  
 > ## Table of contents
 - [Overview](#overview)
@@ -63,7 +63,7 @@ We have integrated the use of Chainlink Price Feed to help DEES communicate with
 > ## Repo Setup
  
 <p align="justify">
-To setup the repo, fork DEES repo, then clone the forked repository to create a copy on the local machine.
+To setup the repo, fork Lebium repo, then clone the forked repository to create a copy on the local machine.
 </p>
  
    $ git clone https://github.com/{GitHub-Username}/Digital-Library-Marketplace.git
@@ -167,7 +167,7 @@ $ npx hardhat run packages/hardhat/deploy/01_Library.js --network rinkeby
 > ### Verify
 - To verify the smartcontract:
 ```
-$ npx hardhat verify 0x5C0c89D5bd5991ECe83F30631b50439318C40C52 --network rinkeby
+$ npx hardhat verify 0xcdb25aa30af6bbe029e8348cad9a0d37293c0c85 --network rinkeby
 ```
  
 #
@@ -198,13 +198,13 @@ $ npm run build
 ```
  
 #
-> ## NestDrive Contract Address
+> ## Contract Address
  
-- https://rinkeby.etherscan.io/address/0x5c0c89d5bd5991ece83f30631b50439318c40c52#code
+- https://rinkeby.etherscan.io/address/0xcdb25aa30af6bbe029e8348cad9a0d37293c0c85#code
  
 # 
 > ## Live Link
-  - @kingzamzon, input link
+  - http://lebium.surge.sh/
 #
  
 > ## Contributors
