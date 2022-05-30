@@ -36,6 +36,10 @@ This is a digital decentralized library marketplace that allows users to upload 
 <p align="justify">
 We have integrated the use of Chainlink Price Feed to help Lebium communicate with live changing prices of ETHUSD to accurately represent items up for public sale.
 </p>
+
+<P align="justify">
+We wanted people to have a safe secure private and permanent place to store private digital items like files, secretes etc, we also wanted people to be able to make money of the digital items they wish to make public, hence the public library market.
+</P>
  
 #
 > ## Project Features
