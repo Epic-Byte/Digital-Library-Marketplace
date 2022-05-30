@@ -30,11 +30,11 @@ This is a project by Team Call-Byte presented for the chainlink spring 2022 hack
 </p>
  
 <p align="justify">
-This is a digital decentralized library marketplace that allows users to upload files, retrieve files, share files with other users from the service. It also allows users to put their files up for public sales and make money from it.
+This is a digital decentralized library marketplace that allows users to upload files, retrieve files in their private library, share files with other users from the service. It also allows users to put their files up for public sales and make money from it.
 </p>
  
 <p align="justify">
-We have integrated the use of Chainlink Price Feed to help DEES communicate with live changing prices of ETHUSD to accurately represent items up for public sale.
+We have integrated the use of Chainlink Price Feed to help Lebium communicate with live changing prices of ETHUSD to accurately represent items up for public sale.
 </p>
  
 #
