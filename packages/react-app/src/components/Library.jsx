@@ -42,26 +42,6 @@ export default function Library({ publicLibrary, writeContracts, tx }) {
     }
   };
 
-  const getData = () => {
-    fetch("https://api.coinbase.com/v2/exchange-rates?currency=ETH", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then(function (response) {
-        console.log(response);
-        return response.json();
-      })
-      .then(function (myJson) {
-        setData(myJson.data.rates.USD);
-      });
-  };
-
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <div style={{ backgroundColor: "#636C78" }}>
