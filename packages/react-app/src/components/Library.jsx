@@ -115,7 +115,7 @@ export default function Library({ publicLibrary, writeContracts, tx }) {
                           className="waveButton"
                           style={{ margin: "10px", color: "green" }}
                           // eslint-disable-next-line prettier/prettier
-                          onClick={() => buyFile(index + 1)}
+                          onClick={() => buyFile(index)}
                         >
                           Buy File
                         </Button>
