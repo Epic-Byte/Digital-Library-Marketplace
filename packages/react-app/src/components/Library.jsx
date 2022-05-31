@@ -12,18 +12,31 @@ export default function Library({ publicLibrary, writeContracts, tx }) {
     setSearchEvents(publicLibrary.filter(item => item.name.includes(val)));
   };
 
-  // eslint-disable-next-line prettier/prettier
-  const buyFile = async (id, price) => {
-    try {
-      console.log("writeContracts", writeContracts);
-      let waveTnx;
+  const getFilePrice = async(x) => {
+    let waveTnx;
       // eslint-disable-next-line prettier/prettier
-      waveTnx = await tx(writeContracts.Library.buyItem(id, { value: (price * 1e18).toString() }));
+      waveTnx = await tx(writeContracts.Library.assetPrice(x));
+      console.log(waveTnx)
+      return waveTnx;
+  }
 
-      console.log("Minig..", waveTnx.hash);
+  // eslint-disable-next-line prettier/prettier
+  const buyFile = async (id) => {
+    try {
+      getFilePrice(id)
+      .then(r => {
+        let trx;
+        trx = tx(writeContracts.Library.buyItem(id,{value: r }));
+      })
+      // console.log("writeContracts", writeContracts);
+      // let waveTnx;
+      // // eslint-disable-next-line prettier/prettier
+      // waveTnx = await tx(writeContracts.Library.buyItem(id, { value: (price * 1e18).toString() }));
 
-      await waveTnx.wait();
-      console.log("Minig---", waveTnx.hash);
+      // console.log("Minig..", waveTnx.hash);
+
+      // await waveTnx.wait();
+      // console.log("Minig---", waveTnx.hash);
     } catch (e) {
       console.log(e);
     }
@@ -44,6 +57,8 @@ export default function Library({ publicLibrary, writeContracts, tx }) {
         setData(myJson.data.rates.USD);
       });
   };
+
+
   useEffect(() => {
     getData();
   }, []);
@@ -100,7 +115,7 @@ export default function Library({ publicLibrary, writeContracts, tx }) {
                           className="waveButton"
                           style={{ margin: "10px", color: "green" }}
                           // eslint-disable-next-line prettier/prettier
-                          onClick={() => buyFile(index + 1, (item.price).toNumber() / data)}
+                          onClick={() => buyFile(index + 1)}
                         >
                           Buy File
                         </Button>
