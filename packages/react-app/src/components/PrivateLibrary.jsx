@@ -114,7 +114,7 @@ export default function PrivateLibrary({ writeContracts, tx, privateLibrary, mai
                           className="waveButton"
                           style={{ margin: "10px", color: "green" }}
                           // eslint-disable-next-line prettier/prettier
-                          onClick={() => salePrice(index + 1)}
+                          onClick={() => salePrice(item.ID)}
                         >
                           Sell
                         </Button>
