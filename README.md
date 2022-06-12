@@ -138,7 +138,7 @@ Next create a `.env` file by using the sample.env. Retrieve your information fro
 - Paste it in the .env file
  
 <p align="center" width="100%">
- <img src="https://drive.google.com/file/d/1pK3MVdVpf5uvrXAsosEADVtK7SqynvwR/view?usp=sharing" alt="etherscan key"/>
+ <img src="https://drive.google.com/uc?id=1pK3MVdVpf5uvrXAsosEADVtK7SqynvwR" alt="etherscan key"/>
 </p>
  
 #
